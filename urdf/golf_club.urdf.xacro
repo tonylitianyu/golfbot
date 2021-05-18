@@ -8,14 +8,15 @@
         </joint>
         <link name="${prefix}_golf_club">
             <visual>
-                <origin rpy="0 0 0" xyz="0 0 0" />
+                <origin rpy="${pi/2} ${pi/2} 0" xyz="-0.1 0.5 0.1" />
                 <geometry>
-                    <mesh filename="package://golfbot/meshes/golf_club.stl"/>
+                    <mesh scale="0.005 0.005 0.005" filename="package://golfbot/meshes/golf_club.stl"/>
                 </geometry>
             </visual>
             <collision>
+                <origin rpy="${pi/2} ${pi/2} 0" xyz="-0.1 0.5 0.1" />
                 <geometry>
-                    <mesh filename="package://golfbot/meshes/golf_club.stl"/>
+                    <mesh scale="0.005 0.005 0.005" filename="package://golfbot/meshes/golf_club.stl"/>
                 </geometry> 
             </collision>
 
