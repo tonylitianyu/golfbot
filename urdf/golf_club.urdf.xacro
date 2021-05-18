@@ -10,10 +10,14 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0" />
                 <geometry>
-                    <box size="0.05 0.05 0.05" />
+                    <mesh filename="package://golfbot/meshes/golf_club.stl"/>
                 </geometry>
-                <material name="green"/>
             </visual>
+            <collision>
+                <geometry>
+                    <mesh filename="package://golfbot/meshes/golf_club.stl"/>
+                </geometry> 
+            </collision>
 
         </link>
 
