@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="golf_club" params="prefix connected_to">
+        <joint name="${prefix}_golf_club_joint" type="fixed">
+            <parent link="${connected_to}"/>
+            <child link="${prefix}_golf_club"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </joint>
+        <link name="${prefix}_golf_club">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0" />
+                <geometry>
+                    <box size="0.05 0.05 0.05" />
+                </geometry>
+                <material name="green"/>
+            </visual>
+
+        </link>
+
+    </xacro:macro>
+
+</robot>

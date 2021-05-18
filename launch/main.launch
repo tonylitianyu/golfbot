@@ -1,0 +1,12 @@
+<launch>
+
+  <include file="$(find golfbot)/launch/golf_ur5.launch" />
+  <include file="$(find ur5_moveit_config)/launch/ur5_moveit_planning_execution.launch">
+    <arg name="sim" value="true" />
+  </include>
+
+  <include file="$(find ur5_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="config" value="true" />
+  </include>
+
+</launch>
