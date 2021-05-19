@@ -1,0 +1,85 @@
+#!/usr/bin/env python
+
+import roslib
+import rospy
+import math
+import actionlib
+import numpy as np
+import random
+import trajectory_msgs.msg as tm
+from std_msgs.msg import String
+from enum import Enum
+from std_srvs.srv import Empty, EmptyResponse
+
+    
+
+
+class Swing:
+    def __init__(self):
+        self.joint_pub = rospy.Publisher('arm_controller/command', tm.JointTrajectory, queue_size=10)
+        self.joint_names = rospy.get_param("arm_controller/joints")
+        self.pub = rospy.Publisher('chatter', String, queue_size=10)
+        print(self.joint_names)
+
+        self.ready_srv = rospy.Service("ready", Empty, self.ready_callback)
+        self.up_srv = rospy.Service("upswing", Empty, self.upswing_callback)
+        self.up_srv = rospy.Service("hit", Empty, self.hit_callback)
+
+        self.goal_pos = np.zeros(len(self.joint_names))
+        self.move = True
+
+    def ready_callback(self, emp):
+        self.goal_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 3.14]
+        print("ready")
+        return EmptyResponse()
+
+    def upswing_callback(self, emp):
+        self.goal_pos = [-0.3, 0.0, 0.0, 0.0, 0.0, 3.14]
+        print("up")
+        return EmptyResponse()
+
+    def hit_callback(self, emp):
+        self.goal_pos = [0.5, 0.0, 0.0, 0.0, 0.0, 3.14]
+        print("hit")
+        return EmptyResponse()
+
+    def move_to_pose(self):
+
+        jt = tm.JointTrajectory()
+        jt.joint_names = self.joint_names
+        jt.header.stamp = rospy.Time.now()
+
+
+        jtp = tm.JointTrajectoryPoint()
+        jtp.positions = self.goal_pos
+        jtp.time_from_start = rospy.Duration(1.0)
+        jt.points.append(jtp)
+        self.joint_pub.publish(jt)
+
+        self.pub.publish("ok")
+
+
+        self.move = False
+
+
+
+def main():
+    """ The main() function. """
+    #ros node init
+
+    rospy.init_node('swing')
+    r = rospy.Rate(10)
+
+    swing = Swing()
+
+    while not rospy.is_shutdown():
+        swing.move_to_pose()
+        r.sleep()
+
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except rospy.ROSInterruptException:
+        pass
