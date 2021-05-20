@@ -22,6 +22,15 @@
 
         </link>
 
+    <gazebo reference="${prefix}_golf_club">
+        <mu1>1</mu1>
+        <mu2>1</mu2>
+        <kp>500000</kp>
+        <kd>0</kd>
+        <minDepth>0</minDepth>
+        <maxVel>1000</maxVel>
+    </gazebo>
+
     </xacro:macro>
 
 </robot>
