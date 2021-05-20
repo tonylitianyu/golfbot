@@ -26,6 +26,7 @@ class Swing:
         self.up_srv = rospy.Service("hit", Empty, self.hit_callback)
 
         self.goal_pos = np.zeros(len(self.joint_names))
+        self.joint_vel = np.zeros(len(self.joint_names))
         self.move = True
 
     def ready_callback(self, emp):
@@ -34,12 +35,12 @@ class Swing:
         return EmptyResponse()
 
     def upswing_callback(self, emp):
-        self.goal_pos = [-0.3, 0.0, 0.0, 0.0, 0.0, 3.14]
+        self.goal_pos = [-1.5, 0.0, 0.0, 0.0, 0.0, 3.14]
         print("up")
         return EmptyResponse()
 
     def hit_callback(self, emp):
-        self.goal_pos = [0.5, 0.0, 0.0, 0.0, 0.0, 3.14]
+        self.goal_pos = [1.5, 0.0, 0.0, 0.0, 0.0, 3.14]
         print("hit")
         return EmptyResponse()
 

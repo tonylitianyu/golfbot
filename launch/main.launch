@@ -9,4 +9,7 @@
     <arg name="config" value="true" />
   </include> -->
 
+
+  <node name="swing" pkg="golfbot" type="swing"/>
+
 </launch>
