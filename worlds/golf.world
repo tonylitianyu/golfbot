@@ -88,28 +88,28 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <state world_name='default'>
-      <sim_time>909 473000000</sim_time>
-      <real_time>449 837001596</real_time>
-      <wall_time>1621479942 128783213</wall_time>
-      <iterations>447922</iterations>
+      <sim_time>947 602000000</sim_time>
+      <real_time>38 286315620</real_time>
+      <wall_time>1621978291 537211842</wall_time>
+      <iterations>38129</iterations>
       <model name='gola'>
-        <pose>1e-06 5.14405 0.040669 0 -0 7e-06</pose>
+        <pose>1.01874 5.14406 0.040669 0 -0 7e-06</pose>
         <scale>1 1 0.037387</scale>
         <link name='link'>
-          <pose>1e-06 5.14405 0.040669 0 -0 7e-06</pose>
+          <pose>1.01874 5.14406 0.040669 0 -0 7e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='golf_ball'>
-        <pose>0.925074 0.430986 0.205159 -0.007365 0.011969 -0.000348</pose>
+        <pose>0.926458 0.435029 0.205166 -0.041523 0.02669 -0.001356</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>0.925074 0.430986 0.205159 -0.007365 0.011969 -0.000348</pose>
+          <pose>0.926458 0.435029 0.205166 -0.041523 0.02669 -0.001356</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0.09079 0.631122 24.5823 0.55636 -0.072765 -0.000428</acceleration>
-          <wrench>0.09079 0.631122 24.5823 0 -0 0</wrench>
+          <acceleration>-0.044734 0.067141 24.5345 0.024133 0.052937 0.000216</acceleration>
+          <wrench>-0.044734 0.067141 24.5345 0 -0 0</wrench>
         </link>
       </model>
       <model name='green_plane'>
@@ -133,13 +133,13 @@
         </link>
       </model>
       <model name='unit_cylinder'>
-        <pose>0.923819 0.430312 0.067521 -0.000804 0.000338 -0.005366</pose>
+        <pose>0.923796 0.430507 0.067533 -0.001198 0.000362 -0.005831</pose>
         <scale>0.059939 0.059939 0.091019</scale>
         <link name='link'>
-          <pose>0.923819 0.430312 0.067521 -0.000804 0.000338 -0.005366</pose>
+          <pose>0.923796 0.430507 0.067533 -0.001198 0.000362 -0.005831</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.033035 0.22201 10.1615 1.40908 -0.724923 -0.019594</acceleration>
-          <wrench>-0.033035 0.22201 10.1615 0 -0 0</wrench>
+          <acceleration>-0.036794 0.082836 10.0736 -1.81201 -0.779409 0.007492</acceleration>
+          <wrench>-0.036794 0.082836 10.0736 0 -0 0</wrench>
         </link>
       </model>
       <model name='ur5_base_tube'>
@@ -154,7 +154,7 @@
       </model>
       <model name='water_obs'>
         <pose>0.081044 2.11619 0.050967 -1.5e-05 -0 -1e-06</pose>
-        <scale>1 1 1</scale>
+        <scale>1 1 0.037021</scale>
         <link name='link'>
           <pose>0.081044 2.11619 0.050967 -1.5e-05 -0 -1e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
@@ -274,7 +274,7 @@
     </model>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>1.74504 3.19009 1.53661 0 0.378598 -1.84163</pose>
+        <pose>1.62012 8.2338 1.73087 0 0.378598 -1.84163</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -423,7 +423,7 @@
         <visual name='visual'>
           <geometry>
             <box>
-              <size>4.21745 1 0.057979</size>
+              <size>4.21745 1 0.057967</size>
             </box>
           </geometry>
           <material>
@@ -449,7 +449,7 @@
           <pose>0 0 0 0 -0 0</pose>
           <geometry>
             <box>
-              <size>4.21745 1 0.057979</size>
+              <size>4.21745 1 0.057967</size>
             </box>
           </geometry>
           <surface>
@@ -727,7 +727,7 @@
         <collision name='collision'>
           <geometry>
             <cylinder>
-              <radius>0.500001</radius>
+              <radius>0.500002</radius>
               <length>1</length>
             </cylinder>
           </geometry>
@@ -748,7 +748,7 @@
         <visual name='visual'>
           <geometry>
             <cylinder>
-              <radius>0.500001</radius>
+              <radius>0.500002</radius>
               <length>1</length>
             </cylinder>
           </geometry>

@@ -56,7 +56,7 @@ class Swing:
         jtp.positions = self.goal_pos
         jtp.velocities = self.joint_vel
         jtp.accelerations = np.zeros(len(self.joint_names))
-        jtp.time_from_start = rospy.Duration(0.5)
+        jtp.time_from_start = rospy.Duration(0.7)
         jt.points.append(jtp)
 
 
