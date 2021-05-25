@@ -678,8 +678,8 @@
               </torsional>
             </friction>
             <bounce>
-              <restitution_coefficient>0</restitution_coefficient>
-              <threshold>1e+06</threshold>
+              <restitution_coefficient>0.8</restitution_coefficient>
+              <threshold>0</threshold>
             </bounce>
             <contact>
               <collide_without_contact>0</collide_without_contact>
@@ -690,7 +690,7 @@
                 <soft_erp>0.2</soft_erp>
                 <kp>1e+13</kp>
                 <kd>1</kd>
-                <max_vel>0.01</max_vel>
+                <max_vel>1000</max_vel>
                 <min_depth>0</min_depth>
               </ode>
               <bullet>

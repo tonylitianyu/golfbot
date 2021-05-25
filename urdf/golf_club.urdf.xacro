@@ -18,7 +18,17 @@
                 <geometry>
                     <mesh scale="0.005 0.005 0.005" filename="package://golfbot/meshes/golf_club.stl"/>
                 </geometry> 
+                <surface>
+                    <bounce>
+                        <restitution_coefficient>0.9</restitution_coefficient>
+                        <threshold>0</threshold>
+                    </bounce>
+                </surface>
             </collision>
+            <inertial>
+                <mass value="10"/>
+                <inertia ixx="10.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="10.0"/>
+            </inertial>
 
         </link>
 

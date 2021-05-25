@@ -7,7 +7,7 @@ import actionlib
 import numpy as np
 import random
 import trajectory_msgs.msg as tm
-from std_msgs.msg import String
+from std_msgs.msg import String, Float64MultiArray
 from enum import Enum
 from std_srvs.srv import Empty, EmptyResponse
 
@@ -16,8 +16,8 @@ from std_srvs.srv import Empty, EmptyResponse
 
 class Swing:
     def __init__(self):
-        self.joint_pub = rospy.Publisher('arm_controller/command', tm.JointTrajectory, queue_size=10)
-        self.joint_names = rospy.get_param("arm_controller/joints")
+        self.joint_pub = rospy.Publisher('/gazebo_panda/effort_joint_position_controller/command', Float64MultiArray, queue_size=10)
+        self.joint_names = rospy.get_param("/gazebo_panda/effort_joint_position_controller/joints")
         self.pub = rospy.Publisher('chatter', String, queue_size=10)
         print(self.joint_names)
 
@@ -30,35 +30,26 @@ class Swing:
         self.move = True
 
     def ready_callback(self, emp):
-        self.goal_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 3.14]
+        self.goal_pos = [-1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0]
         #self.joint_vel = [0.0, 0.0, 0.0, 0.0, 0.0, 0.5]
         print("ready")
         return EmptyResponse()
 
     def upswing_callback(self, emp):
-        self.goal_pos = [-1.8, 0.0, 0.0, 0.0, 0.0, 3.14]
+        self.goal_pos = [-2.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0]
         print("up")
         return EmptyResponse()
 
     def hit_callback(self, emp):
-        self.goal_pos = [1.8, 0.0, 0.0, 0.0, 0.0, 3.14]
+        self.goal_pos = [1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0]
         print("hit")
         return EmptyResponse()
 
     def move_to_pose(self):
 
-        jt = tm.JointTrajectory()
-        jt.joint_names = self.joint_names
-        jt.header.stamp = rospy.Time.now()
+        jt = Float64MultiArray()
 
-
-        jtp = tm.JointTrajectoryPoint()
-        jtp.positions = self.goal_pos
-        jtp.velocities = self.joint_vel
-        jtp.accelerations = np.zeros(len(self.joint_names))
-        jtp.time_from_start = rospy.Duration(0.5)
-        jt.points.append(jtp)
-
+        jt.data = self.goal_pos
 
         self.joint_pub.publish(jt)
 
