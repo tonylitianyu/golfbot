@@ -7,7 +7,7 @@ import actionlib
 import numpy as np
 import random
 import trajectory_msgs.msg as tm
-from std_msgs.msg import String
+from std_msgs.msg import String, Float32
 from enum import Enum
 from std_srvs.srv import Empty, EmptyResponse
 
@@ -16,6 +16,8 @@ from std_srvs.srv import Empty, EmptyResponse
 
 class Swing:
     def __init__(self):
+        self.dis_sub = rospy.Subscriber("goal_distance", Float32, self.distance_callback)
+
         self.joint_pub = rospy.Publisher('arm_controller/command', tm.JointTrajectory, queue_size=10)
         self.joint_names = rospy.get_param("arm_controller/joints")
         self.pub = rospy.Publisher('chatter', String, queue_size=10)
@@ -28,6 +30,9 @@ class Swing:
         self.goal_pos = np.zeros(len(self.joint_names))
         self.joint_vel = np.zeros(len(self.joint_names))
         self.move = True
+
+    def distance_callback(self, data):
+        rospy.loginfo("get distance: %s", data)
 
     def ready_callback(self, emp):
         self.goal_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 3.14]

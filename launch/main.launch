@@ -12,6 +12,7 @@
   </include> -->
 
 
-  <node name="swing" pkg="golfbot" type="swing"/>
+  <node name="swing" pkg="golfbot" type="swing" output="screen"/>
+  <node name="vision" pkg="golfbot" type="vision" output="screen"/>
 
 </launch>

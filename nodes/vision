@@ -1,0 +1,152 @@
+#!/usr/bin/env python
+
+from cv_bridge.core import CvBridgeError
+import roslib
+import rospy
+import math
+import cv2
+import numpy as np
+from cv_bridge import CvBridge
+from sensor_msgs.msg import Image
+from std_msgs.msg import Float32
+from std_srvs.srv import Empty, EmptyResponse
+
+class Vision:
+    def __init__(self):
+
+        self.img_sub = rospy.Subscriber("/camera/infra1/image_raw", Image, self.img_sub_callback)
+        self.dep_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.dep_sub_callback)
+
+        self.dis_pub = rospy.Publisher('goal_distance', Float32, queue_size=10, latch=True)
+
+        self.up_srv = rospy.Service("eyeball", Empty, self.eyeball)
+        self.bridge = CvBridge()
+
+        self.running = False
+
+        self.color_img = None
+        self.dep_img = None
+
+    def img_sub_callback(self, data):
+        try:
+            self.color_img = self.bridge.imgmsg_to_cv2(data, desired_encoding='passthrough')
+            # (rows,cols) = cv_image.shape
+            # print(rows, cols)
+        except CvBridgeError as e:
+            print(e)
+
+
+    def dep_sub_callback(self, data):
+        try:
+            self.dep_img = self.bridge.imgmsg_to_cv2(data, desired_encoding='passthrough')
+            # (rows,cols) = cv_image.shape
+            # print(cv_image)
+            # print('depth', rows, cols)
+        except CvBridgeError as e:
+            print(e)
+
+
+    def eyeball(self, emp):
+        if self.running == False:
+
+            self.running = True
+
+
+            params = cv2.SimpleBlobDetector_Params()
+
+            # Change thresholds
+            params.minThreshold = 0
+            params.maxThreshold = 200
+            
+            
+            # Filter by Area.
+            params.filterByArea = True
+            params.minArea = 1000
+            
+            # Filter by Circularity
+            params.filterByCircularity = False
+            params.minCircularity = 0.1
+            
+            # Filter by Convexity
+            params.filterByConvexity = False
+            params.minConvexity = 0.87
+            
+            # Filter by Inertia
+            params.filterByInertia = False
+            params.minInertiaRatio = 0.01
+
+            params.filterByColor = True
+            params.blobColor = 0
+
+            ver = (cv2.__version__).split('.')
+            if int(ver[0]) < 3 :
+                detector = cv2.SimpleBlobDetector(params)
+            else : 
+                detector = cv2.SimpleBlobDetector_create(params)
+
+            img2 = cv2.merge((self.color_img,self.color_img,self.color_img))
+            img2 = cv2.fastNlMeansDenoisingColored(img2,None,10,10,7,21)
+
+            thresh = 100
+            img2 = cv2.threshold(img2, thresh, 255, cv2.THRESH_BINARY_INV)[1]
+
+            detector.empty()
+            keypoints = detector.detect(img2)
+
+
+            print(len(keypoints))
+            if len(keypoints) == 1:
+                dep_x = int(keypoints[0].pt[0])
+                dep_y = int(keypoints[0].pt[1])
+
+                print(dep_x, dep_y, self.dep_img[dep_y][dep_x], self.dep_img[0][0])
+
+                rospy.loginfo("goal x: %s, goal y: %s", str(dep_x), str(dep_y))
+                rospy.loginfo("Distance: %s", str(self.dep_img[dep_y][dep_x]))
+
+                distance = self.dep_img[dep_y][dep_x]
+
+                self.dis_pub.publish(distance)
+
+            else:
+                rospy.logerr("fail to find blob")
+
+            blobs = cv2.drawKeypoints(img2, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DEFAULT)
+            cv2.imwrite("test.png", blobs)
+            cv2.imshow('Blobs',blobs)
+            cv2.waitKey(0)
+
+            self.running = False
+
+        else:
+            rospy.logerr("still running the last call")
+
+        return EmptyResponse()
+
+
+
+
+
+def main():
+    """ The main() function. """
+    #ros node init
+
+    rospy.init_node('vision')
+    r = rospy.Rate(10)
+
+    vision = Vision()
+
+    while not rospy.is_shutdown():
+
+        r.sleep()
+
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except rospy.ROSInterruptException:
+        pass
+
+
+
