@@ -1,5 +1,5 @@
 <launch>
-
+  <arg name="distance" default="5.0" doc="user set distance" />
   <include file="$(find golfbot)/launch/golf_ur5.launch" />
 
   <!-- <include file="$(find gazebo_panda)/launch/simple_world.launch" /> -->
@@ -14,5 +14,7 @@
 
   <node name="swing" pkg="golfbot" type="swing" output="screen"/>
   <node name="vision" pkg="golfbot" type="vision" output="screen"/>
+
+  <node name="sdf_spawn" pkg="gazebo_ros" type="spawn_model" args="-file $(find golfbot)/urdf/model.sdf -sdf -model goal -x 1.0187 -y $(arg distance) " respawn="false" output="screen" />
 
 </launch>

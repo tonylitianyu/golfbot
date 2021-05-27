@@ -20,7 +20,6 @@ class Swing:
 
         self.joint_pub = rospy.Publisher('arm_controller/command', tm.JointTrajectory, queue_size=10)
         self.joint_names = rospy.get_param("arm_controller/joints")
-        self.pub = rospy.Publisher('chatter', String, queue_size=10)
         print(self.joint_names)
 
         self.ready_srv = rospy.Service("ready", Empty, self.ready_callback)
@@ -29,15 +28,20 @@ class Swing:
 
         self.goal_pos = np.zeros(len(self.joint_names))
         self.joint_vel = np.zeros(len(self.joint_names))
+        self.duration = 1.5
         self.move = True
+
+        self.curr_dis = 0.0
 
     def distance_callback(self, data):
         rospy.loginfo("get distance: %s", data)
+        self.curr_dis = data.data/1000.0
 
     def ready_callback(self, emp):
         self.goal_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 3.14]
         #self.joint_vel = [0.0, 0.0, 0.0, 0.0, 0.0, 0.5]
         print("ready")
+
         return EmptyResponse()
 
     def upswing_callback(self, emp):
@@ -48,6 +52,11 @@ class Swing:
     def hit_callback(self, emp):
         self.goal_pos = [1.8, 0.0, 0.0, 0.0, 0.0, 3.14]
         print("hit")
+        v = math.sqrt(self.curr_dis/math.sin(2*0.174533))
+        omega = v/(0.39225+0.425)
+        self.duration = 1.5*(3.6/omega)
+        rospy.loginfo("hitting duration: %s", str(self.duration))
+        # self.duration = 0.7
         return EmptyResponse()
 
     def move_to_pose(self):
@@ -61,13 +70,11 @@ class Swing:
         jtp.positions = self.goal_pos
         jtp.velocities = self.joint_vel
         jtp.accelerations = np.zeros(len(self.joint_names))
-        jtp.time_from_start = rospy.Duration(0.7)
+        jtp.time_from_start = rospy.Duration(self.duration)
         jt.points.append(jtp)
 
 
         self.joint_pub.publish(jt)
-
-        self.pub.publish("ok")
 
 
         self.move = False

@@ -88,18 +88,18 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <state world_name='default'>
-      <sim_time>1003 483000000</sim_time>
-      <real_time>21 844500321</real_time>
-      <wall_time>1622084799 92106510</wall_time>
-      <iterations>21751</iterations>
+      <sim_time>1048 396000000</sim_time>
+      <real_time>45 98596282</real_time>
+      <wall_time>1622086151 473892375</wall_time>
+      <iterations>44913</iterations>
       <model name='golf_ball'>
-        <pose>0.923816 0.439982 0.20516 -0.08659 0.005347 -0.002685</pose>
+        <pose>0.922381 0.400072 0.20513 -0.103202 -0.00581 -0.002741</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>0.923816 0.439982 0.20516 -0.08659 0.005347 -0.002685</pose>
+          <pose>0.922381 0.400072 0.20513 -0.103202 -0.00581 -0.002741</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.129172 -0.03448 24.5641 -0.060705 0.098879 -0.000413</acceleration>
-          <wrench>-0.129172 -0.03448 24.5641 0 -0 0</wrench>
+          <acceleration>0.075763 -0.009442 4.86835 -0.020811 -0.079615 -0.000285</acceleration>
+          <wrench>0.075763 -0.009442 4.86835 0 -0 0</wrench>
         </link>
       </model>
       <model name='green_plane'>
@@ -123,13 +123,13 @@
         </link>
       </model>
       <model name='unit_cylinder'>
-        <pose>0.923574 0.430598 0.067529 -0.000909 -0.000647 -0.006274</pose>
+        <pose>0.923498 0.400082 0.067491 -0.000892 -0.000732 -0.006414</pose>
         <scale>0.059939 0.059939 0.091019</scale>
         <link name='link'>
-          <pose>0.923574 0.430598 0.067529 -0.000909 -0.000647 -0.006274</pose>
+          <pose>0.923498 0.400082 0.067491 -0.000892 -0.000732 -0.006414</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.133549 -0.01058 10.119 -2.92382 -0.215035 -3.13154</acceleration>
-          <wrench>-0.133549 -0.01058 10.119 0 -0 0</wrench>
+          <acceleration>-0.075763 0.009442 -24.4683 0.006416 -0.129196 9.7e-05</acceleration>
+          <wrench>-0.075763 0.009442 -24.4683 0 -0 0</wrench>
         </link>
       </model>
       <model name='ur5_base_tube'>
