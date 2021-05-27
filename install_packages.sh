@@ -1,4 +1,5 @@
 #Install packages
+cd ..
 git clone -b melodic-devel https://github.com/ros-industrial/universal_robot
 rosdep install -y --from-paths . --ignore-src --rosdistro $ROS_DISTRO
 git clone https://github.com/issaiass/realsense_gazebo_plugin
