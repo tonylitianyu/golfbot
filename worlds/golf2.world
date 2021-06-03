@@ -228,7 +228,7 @@
               </torsional>
             </friction>
             <bounce>
-              <restitution_coefficient>0</restitution_coefficient>
+              <restitution_coefficient>0.7</restitution_coefficient>
               <threshold>1e+06</threshold>
             </bounce>
             <contact>
@@ -240,8 +240,8 @@
                 <soft_erp>0.2</soft_erp>
                 <kp>1e+13</kp>
                 <kd>1</kd>
-                <max_vel>0.01</max_vel>
-                <min_depth>0</min_depth>
+                <max_vel>1000</max_vel>
+                <min_depth>0.001</min_depth>
               </ode>
               <bullet>
                 <split_impulse>1</split_impulse>
@@ -441,7 +441,7 @@
               </torsional>
             </friction>
             <bounce>
-              <restitution_coefficient>0.9</restitution_coefficient>
+              <restitution_coefficient>0.7</restitution_coefficient>
               <threshold>0</threshold>
             </bounce>
             <contact>
@@ -454,7 +454,7 @@
                 <kp>1e+13</kp>
                 <kd>1</kd>
                 <max_vel>1000</max_vel>
-                <min_depth>0</min_depth>
+                <min_depth>0.001</min_depth>
               </ode>
               <bullet>
                 <split_impulse>1</split_impulse>

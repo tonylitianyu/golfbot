@@ -52,9 +52,14 @@ class Swing:
     def hit_callback(self, emp):
         self.goal_pos = [1.8, 0.0, 0.0, 0.0, 0.0, 3.14]
         print("hit")
-        v = math.sqrt(self.curr_dis/math.sin(2*0.174533))
-        omega = v/(0.39225+0.425)
-        self.duration = 1.5*(3.6/omega)
+        # v = math.sqrt(9.8*self.curr_dis/math.sin(2*0.566))
+
+        # v_club = (0.04593*v)/10
+        # omega = v_club/(0.39225+0.425)
+        # self.duration = 1.0*(3.6/omega)
+
+        self.duration = (self.curr_dis - 16.954)/(-12.436)
+
         rospy.loginfo("hitting duration: %s", str(self.duration))
         # self.duration = 0.7
         return EmptyResponse()

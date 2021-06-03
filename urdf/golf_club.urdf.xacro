@@ -37,7 +37,7 @@
         <mu2>1</mu2>
         <kp>500000</kp>
         <kd>0</kd>
-        <minDepth>0</minDepth>
+        <minDepth>0.001</minDepth>
         <maxVel>1000</maxVel>
     </gazebo>
 
