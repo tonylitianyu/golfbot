@@ -1,0 +1,8 @@
+#The dimensional parameters of the differential-drive robot
+length: 1.0         #The length of the rectangular prism body
+width: 0.5          #The width of the rectangular prism body
+height: 0.05         #The height of the rectangular prism body
+base_mass: 10.0      #The mass of the rectangular prism body
+wheel_radius: 0.10  #The radius of the cylindrical wheel
+wheel_width: 0.05    #The thickness of the cylindrical wheel
+wheel_mass: 0.25    #The mass of the cylindrical wheel

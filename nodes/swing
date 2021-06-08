@@ -2,12 +2,14 @@
 
 import roslib
 import rospy
+import actionlib
 import math
 import actionlib
 import numpy as np
 import random
 import trajectory_msgs.msg as tm
 from std_msgs.msg import String, Float32
+from control_msgs.msg import JointTrajectoryControllerState, FollowJointTrajectoryAction, FollowJointTrajectoryGoal, FollowJointTrajectoryFeedback
 from enum import Enum
 from std_srvs.srv import Empty, EmptyResponse
 
@@ -19,17 +21,24 @@ class Swing:
         self.dis_sub = rospy.Subscriber("goal_distance", Float32, self.distance_callback)
 
         self.joint_pub = rospy.Publisher('arm_controller/command', tm.JointTrajectory, queue_size=10)
+
+        self.arm_client = actionlib.SimpleActionClient('arm_controller/follow_joint_trajectory', FollowJointTrajectoryAction)
+        self.arm_client.wait_for_server()
+        rospy.sleep(1)
+
+
+
+
         self.joint_names = rospy.get_param("arm_controller/joints")
         print(self.joint_names)
 
         self.ready_srv = rospy.Service("ready", Empty, self.ready_callback)
-        self.up_srv = rospy.Service("upswing", Empty, self.upswing_callback)
         self.up_srv = rospy.Service("hit", Empty, self.hit_callback)
 
         self.goal_pos = np.zeros(len(self.joint_names))
         self.joint_vel = np.zeros(len(self.joint_names))
         self.duration = 1.5
-        self.move = True
+        self.moving = True
 
         self.curr_dis = 0.0
 
@@ -37,20 +46,22 @@ class Swing:
         rospy.loginfo("get distance: %s", data)
         self.curr_dis = data.data/1000.0
 
+
+
     def ready_callback(self, emp):
-        self.goal_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 3.14]
-        #self.joint_vel = [0.0, 0.0, 0.0, 0.0, 0.0, 0.5]
+        #self.goal_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 3.14]
+
+        self.goal_pos = [[0.0, -1.0, 0.0, -1.87, 0.0, 3.14], [0.0, -1.0, 0.0, -1.87, -1.57, 3.14], [0.0, -1.0, 1.3, -1.87, -1.57, 3.14]]
+        #self.goal_pos = [0.0, -1.0, 1.3, -1.87, 0.0, 3.14]
         print("ready")
 
-        return EmptyResponse()
+        self.moving = False
 
-    def upswing_callback(self, emp):
-        self.goal_pos = [-1.8, 0.0, 0.0, 0.0, 0.0, 3.14]
-        print("up")
+
         return EmptyResponse()
 
     def hit_callback(self, emp):
-        self.goal_pos = [1.8, 0.0, 0.0, 0.0, 0.0, 3.14]
+        self.goal_pos = [[-1.8, -1.0, 1.3, -1.87, -3.0, 3.14], [1.8, -1.0, 1.3, -1.87, -0.14, 3.14]]
         print("hit")
         # v = math.sqrt(9.8*self.curr_dis/math.sin(2*0.566))
 
@@ -58,31 +69,44 @@ class Swing:
         # omega = v_club/(0.39225+0.425)
         # self.duration = 1.0*(3.6/omega)
 
-        self.duration = (self.curr_dis - 16.954)/(-12.436)
+        self.duration = 1.0#(self.curr_dis - 16.954)/(-12.436)
 
         rospy.loginfo("hitting duration: %s", str(self.duration))
         # self.duration = 0.7
+
+        self.moving = False
         return EmptyResponse()
 
     def move_to_pose(self):
+        self.moving = True
+        for i in range(len(self.goal_pos)):
+            
 
-        jt = tm.JointTrajectory()
-        jt.joint_names = self.joint_names
-        jt.header.stamp = rospy.Time.now()
+            arm_traj = tm.JointTrajectory()
+            arm_traj.joint_names = self.joint_names
+
+            jtp = tm.JointTrajectoryPoint()
+            jtp.positions = self.goal_pos[i]
+            jtp.velocities = self.joint_vel
+            jtp.accelerations = np.zeros(len(self.joint_names))
+            jtp.time_from_start = rospy.Duration(self.duration)
+            arm_traj.points.append(jtp)
+
+            arm_goal = FollowJointTrajectoryGoal()
 
 
-        jtp = tm.JointTrajectoryPoint()
-        jtp.positions = self.goal_pos
-        jtp.velocities = self.joint_vel
-        jtp.accelerations = np.zeros(len(self.joint_names))
-        jtp.time_from_start = rospy.Duration(self.duration)
-        jt.points.append(jtp)
+            arm_goal.trajectory = arm_traj
+            arm_goal.goal_time_tolerance = rospy.Duration(0)
 
+            self.arm_client.send_goal(arm_goal)
+            res = self.arm_client.wait_for_result()
+            if res:
+                print('success')
+            else:
+                print('fail')
 
-        self.joint_pub.publish(jt)
+            rospy.sleep(1)
 
-
-        self.move = False
 
 
 
@@ -96,7 +120,8 @@ def main():
     swing = Swing()
 
     while not rospy.is_shutdown():
-        swing.move_to_pose()
+        if not swing.moving:
+            swing.move_to_pose()
         r.sleep()
 
 

@@ -10,8 +10,8 @@
   <!-- ur5 -->
   <xacro:include filename="$(find golfbot)/urdf/ur5.urdf.xacro" />
 
-  <xacro:include filename="golf_club.urdf.xacro" />
-
+  
+  
   <!-- arm -->
   <xacro:ur5_robot prefix="" joint_limited="false"
     transmission_hw_interface="$(arg transmission_hw_interface)"
@@ -19,7 +19,11 @@
 
 
   <!-- golf club -->
-  <xacro:golf_club prefix="" connected_to="tool0" />
+  <xacro:include filename="golf_club.urdf.xacro" />
+  <!-- <xacro:golf_club prefix="" connected_to="tool0" /> -->
+
+  <!-- ddrive -->
+  <xacro:include filename="ddrive.urdf.xacro" />
 
 
   <!-- camera link -->
@@ -36,6 +40,12 @@
     <parent link="world" />
     <child link = "base_link" />
     <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <joint name="ddrive_joint" type="fixed">
+    <parent link="base_link" />
+    <child link = "ddrive_base_link" />
+    <origin xyz="0.0 0.0 5.0" rpy="0.0 0.0 0.0" />
   </joint>
 
 </robot>

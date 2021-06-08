@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<robot name="ddrive" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:property name="yaml_file" value="$(find golfbot)/config/ddrive.yaml"/>
+    <xacro:property name="dimension_props" value="${load_yaml(yaml_file)}"/>
+    <xacro:property name="length" value="${dimension_props['length']}" />
+    <xacro:property name="width" value="${dimension_props['width']}" />
+    <xacro:property name="height" value="${dimension_props['height']}" />
+    <xacro:property name="wheel_radius" value="${dimension_props['wheel_radius']}" />
+    <xacro:property name="wheel_width" value="${dimension_props['wheel_width']}" />
+
+    <gazebo reference="ddrive_base_link">
+        <material>Gazebo/Grey</material>
+    </gazebo>
+
+    <gazebo reference="left_wheel">
+        <material>Gazebo/DarkGrey</material>
+        <mu1>100</mu1>
+        <mu2>100</mu2>
+        <kp>1e+13</kp>
+        <kd>1</kd>
+        <minDepth>0.001</minDepth>
+        <maxVel>1000</maxVel>
+        <fdir1>1 0 0</fdir1>
+    </gazebo>
+
+    <gazebo reference="right_wheel">
+        <material>Gazebo/DarkGrey</material>
+        <mu1>100</mu1>
+        <mu2>100</mu2>
+        <kp>1e+13</kp>
+        <kd>1</kd>
+        <minDepth>0.001</minDepth>
+        <maxVel>1000</maxVel>
+        <fdir1>1 0 0</fdir1>
+    </gazebo>
+
+    <gazebo reference="left_front_wheel">
+        <material>Gazebo/DarkGrey</material>
+        <mu1>100</mu1>
+        <mu2>100</mu2>
+        <kp>1e+13</kp>
+        <kd>1</kd>
+        <minDepth>0.001</minDepth>
+        <maxVel>1000</maxVel>
+        <fdir1>1 0 0</fdir1>
+    </gazebo>
+
+    <gazebo reference="right_front_wheel">
+        <material>Gazebo/DarkGrey</material>
+        <mu1>100</mu1>
+        <mu2>100</mu2>
+        <kp>1e+13</kp>
+        <kd>1</kd>
+        <minDepth>0.001</minDepth>
+        <maxVel>1000</maxVel>
+        <fdir1>1 0 0</fdir1>
+    </gazebo>
+
+
+    <gazebo>
+        <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+            <rosDebugLevel>na</rosDebugLevel>
+            <alwaysOn>true</alwaysOn>
+            <updateRate>100</updateRate>
+            <leftJoint>left_joint</leftJoint>
+            <rightJoint>right_joint</rightJoint>
+            <wheelSeparation>${width}</wheelSeparation>
+            <wheelDiameter>${wheel_radius*2}</wheelDiameter>
+            <wheelTorque>35</wheelTorque>
+            <commandTopic>diff/cmd_vel</commandTopic>
+            <odometryTopic>diff/odom</odometryTopic>
+            <odometryFrame>odom</odometryFrame>
+            <robotBaseFrame>ddrive_base_link</robotBaseFrame>
+            <publishWheelTF>false</publishWheelTF>
+            <publishOdomTF>true</publishOdomTF>
+            <publishWheelJointState>true</publishWheelJointState>
+            <wheelAcceleration>false</wheelAcceleration>
+            <odometrySource>world</odometrySource>
+            <publishTf>1</publishTf>
+        </plugin>
+    </gazebo>
+</robot>

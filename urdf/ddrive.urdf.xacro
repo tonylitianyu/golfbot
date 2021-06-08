@@ -1,0 +1,209 @@
+<?xml version="1.0" ?>
+<robot name="ddrive" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find golfbot)/urdf/ddrive.gazebo"/>
+
+    <xacro:property name="yaml_file" value="$(find golfbot)/config/ddrive.yaml"/>
+    <xacro:property name="dimension_props" value="${load_yaml(yaml_file)}"/>
+    <xacro:property name="length" value="${dimension_props['length']}" />
+    <xacro:property name="width" value="${dimension_props['width']}" />
+    <xacro:property name="height" value="${dimension_props['height']}" />
+    <xacro:property name="base_mass" value="${dimension_props['base_mass']}" />
+    <xacro:property name="wheel_radius" value="${dimension_props['wheel_radius']}" />
+    <xacro:property name="wheel_width" value="${dimension_props['wheel_width']}" />
+    <xacro:property name="wheel_mass" value="${dimension_props['wheel_mass']}" />
+    <xacro:property name="caster_radius" value="${dimension_props['caster_raidus']}" />
+    <xacro:property name="caster_mass" value="${dimension_props['caster_mass']}" />
+
+    <xacro:property name="left_wheel_xyz" value="${(length/2)} ${(width/2)+(wheel_width/2)} 0" />
+    <xacro:property name="left_wheel_rpy" value="${pi/2} 0 0" />
+    <xacro:property name="right_wheel_xyz" value="${(length/2)} ${-(width/2)-(wheel_width/2)} 0" />
+    <xacro:property name="right_wheel_rpy" value="${pi/2} 0 0" />
+    <xacro:property name="left_front_wheel_xyz" value="${-(length/2)} ${(width/2)+(wheel_width/2)} 0" />
+    <xacro:property name="right_front_wheel_xyz" value="${-(length/2)} ${-(width/2)-(wheel_width/2)} 0" />
+    <xacro:property name="caster_wheel_1_xyz" value="${-(width/2)-(wheel_width/2)} 0 ${-(height/2)}" />
+    <xacro:property name="caster_wheel_1_rpy" value="0 0 0" />
+    <xacro:property name="caster_wheel_2_xyz" value="${-(width/2)-(wheel_width/2)} 0 ${(height/2)}" />
+    <xacro:property name="caster_wheel_2_rpy" value="0 0 0" />
+
+    <xacro:property name="base_inertia_xx" value="${(1/12)*base_mass*((width**2)+(height**2))}" />
+    <xacro:property name="base_inertia_yy" value="${(1/12)*base_mass*((height**2)+(length**2))}" />
+    <xacro:property name="base_inertia_zz" value="${(1/12)*base_mass*((width**2)+(length**2))}" />
+    <xacro:property name="wheel_inertia_xxyy" value="${(1/12)*wheel_mass*((3*wheel_radius**2)+(wheel_width**2))}" />
+    <xacro:property name="wheel_inertia_zz" value="${(1/2)*wheel_mass*(wheel_radius**2)}" />
+
+    <xacro:property name="caster_inertia" value="${(2/5)*caster_mass*(caster_radius**2)}" />
+
+
+    <material name="green">
+        <color rgba="0 1.0 0 1"/>
+    </material>
+
+    <material name="red">
+        <color rgba="1.0 0 0 1"/>
+    </material>
+
+    <link name="dummy" />
+
+    <joint name="dummy_to_chassis" type="fixed">
+        <parent link="dummy"/>
+        <child link="ddrive_base_link"/>
+    </joint>
+
+    <link name="ddrive_base_link">
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${length} ${width} ${height}"/>
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <box size="${length} ${width} ${height}" />
+            </geometry>
+            <material name="green"/>
+        </visual>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="${base_mass}"/>
+            <inertia
+                ixx="${base_inertia_xx}" ixy="0.0" ixz="0.0"
+                iyy="${base_inertia_yy}" iyz="0.0"
+                izz="${base_inertia_zz}"/>
+        </inertial>
+    </link>
+
+    <link name="left_wheel">
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+        <inertial>
+            <origin xyz="0 0 0"/>
+            <mass value="${wheel_mass}"/>
+            <inertia
+                ixx="${wheel_inertia_xxyy}" ixy="0.0" ixz="0.0"
+                iyy="${wheel_inertia_xxyy}" iyz="0.0"
+                izz="${wheel_inertia_zz}"/>
+        </inertial>
+    </link>
+
+    <link name="right_wheel">
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+        <inertial>
+            <origin xyz="0 0 0"/>
+            <mass value="${wheel_mass}"/>
+            <inertia
+                ixx="${wheel_inertia_xxyy}" ixy="0.0" ixz="0.0"
+                iyy="${wheel_inertia_xxyy}" iyz="0.0"
+                izz="${wheel_inertia_zz}"/>
+        </inertial>
+    </link>
+
+    <link name="left_front_wheel">
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+        <inertial>
+            <origin xyz="0 0 0"/>
+            <mass value="${wheel_mass}"/>
+            <inertia
+                ixx="${wheel_inertia_xxyy}" ixy="0.0" ixz="0.0"
+                iyy="${wheel_inertia_xxyy}" iyz="0.0"
+                izz="${wheel_inertia_zz}"/>
+        </inertial>
+    </link>
+
+    <link name="right_front_wheel">
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+        <inertial>
+            <origin xyz="0 0 0"/>
+            <mass value="${wheel_mass}"/>
+            <inertia
+                ixx="${wheel_inertia_xxyy}" ixy="0.0" ixz="0.0"
+                iyy="${wheel_inertia_xxyy}" iyz="0.0"
+                izz="${wheel_inertia_zz}"/>
+        </inertial>
+    </link>
+
+
+
+    <joint name="left_joint" type="continuous">
+        <axis xyz="0 0 1"/>
+        <origin rpy="${-pi/2} 0 0" xyz="${left_wheel_xyz}"/>
+        <parent link="ddrive_base_link"/>
+        <child link="left_wheel"/>
+    </joint>
+
+    <joint name="right_joint" type="continuous">
+        <axis xyz="0 0 1"/>
+        <origin rpy="${-pi/2} 0 0" xyz="${right_wheel_xyz}"/>
+        <parent link="ddrive_base_link"/>
+        <child link="right_wheel"/>
+    </joint>
+
+    <joint name="left_front_joint" type="continuous">
+        <axis xyz="0 0 1"/>
+        <origin rpy="${-pi/2} 0 0" xyz="${left_front_wheel_xyz}"/>
+        <parent link="ddrive_base_link"/>
+        <child link="left_front_wheel"/>
+    </joint>
+
+    <joint name="right_front_joint" type="continuous">
+        <axis xyz="0 0 1"/>
+        <origin rpy="${-pi/2} 0 0" xyz="${right_front_wheel_xyz}"/>
+        <parent link="ddrive_base_link"/>
+        <child link="right_front_wheel"/>
+    </joint>
+
+
+
+</robot>
