@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+
+
+import rospy
+import numpy as np
+import math
+from geometry_msgs.msg import Twist
+from std_msgs.msg import Int16
+
+STOP = 0
+FORWARD = 1
+BACKWARD = 2
+
+
+class Moving:
+    def __init__(self):
+        self.vel_pub = rospy.Publisher("diff/cmd_vel", Twist, queue_size = 10)
+        self.command_sub = rospy.Subscriber("move_command",Int16, self.command_callback)
+
+        self.command_flag = STOP
+    
+    def command_callback(self, data):
+        self.command_flag = data.data
+
+
+    def move_base(self):
+
+        vel = Twist()
+        if self.command_flag == FORWARD:
+            vel.linear.x = -1.0
+        elif self.command_flag == BACKWARD:
+            vel.linear.x = 0.2
+        else:
+            vel.linear.x = 0.0
+        self.vel_pub.publish(vel)
+
+
+
+def main():
+    """ The main() function. """
+    #ros node init
+
+    rospy.init_node('moving')
+    r = rospy.Rate(10)
+
+    moving = Moving()
+
+    while not rospy.is_shutdown():
+        moving.move_base()
+        r.sleep()
+
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except rospy.ROSInterruptException:
+        pass

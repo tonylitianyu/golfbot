@@ -158,6 +158,7 @@ include_directories(
 catkin_install_python(PROGRAMS
   nodes/swing
   nodes/vision
+  nodes/moving
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

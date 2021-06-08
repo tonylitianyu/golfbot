@@ -14,6 +14,7 @@
 
   <node name="swing" pkg="golfbot" type="swing" output="screen"/>
   <node name="vision" pkg="golfbot" type="vision" output="screen"/>
+  <node name="moving" pkg="golfbot" type="moving" output="screen"/>
 
   <node name="sdf_spawn" pkg="gazebo_ros" type="spawn_model" args="-file $(find golfbot)/urdf/model.sdf -sdf -model goal -x 1.0187 -y $(arg distance) " respawn="false" output="screen" />
 

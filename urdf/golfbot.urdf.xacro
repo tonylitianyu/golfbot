@@ -78,9 +78,9 @@
   <!-- camera support-->
     <link name="camera_support">
         <visual>
-            <origin rpy="0 0.0 0.0" xyz="0 0 0.2" />
+            <origin rpy="0 0.0 0.0" xyz="0 0 0.35" />
             <geometry>
-                <cylinder radius="0.01" length="0.4"/>
+                <cylinder radius="0.01" length="0.7"/>
             </geometry>
             <material name="green"/>
         </visual>
@@ -98,5 +98,11 @@
         <parent link="ddrive_base_link"/>
         <child link="camera_support"/>
     </joint>
+
+  <!-- camera -->
+  <xacro:include filename="$(find golfbot)/urdf/_d435.urdf.xacro" />
+  <xacro:sensor_d435 name="camera" topics_ns="camera" parent="camera_support" publish_pointcloud="true">
+    <origin xyz="0 0 0.7" rpy="0 0 ${pi}" />
+  </xacro:sensor_d435>
 
 </robot>
