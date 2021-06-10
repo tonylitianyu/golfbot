@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 
+""" 
+This node move the mobile platform to achieve "weight shift" in golf swing
+
+SUBSCIRBERS:
+  + <move_command> (<Int16>) ~ get moving command from the swing node
+
+PUBLISHERS:
+  + <diff/cmd_vel> (<Twist>) ~ move the mobile platform in a direction with a specific velocity
+
+"""
 
 import rospy
 import numpy as np
@@ -14,6 +24,9 @@ BACKWARD = 2
 
 class Moving:
     def __init__(self):
+        '''
+            This class set up and perform the swing
+        '''
         self.vel_pub = rospy.Publisher("diff/cmd_vel", Twist, queue_size = 10)
         self.command_sub = rospy.Subscriber("move_command",Int16, self.command_callback)
 
@@ -23,10 +36,22 @@ class Moving:
 
     
     def command_callback(self, data):
+        '''callback function for receiving move direction command
+            Args:
+                data (Int16) - command integer
+            Returns:
+                None
+        '''
         self.command_flag = data.data
 
 
     def move_base(self):
+        '''callback function for receiving move direction command
+            Args:
+                None
+            Returns:
+                None
+        '''
 
         vel = Twist()
         if self.command_flag == FORWARD:
