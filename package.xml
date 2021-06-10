@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>golfbot</name>
-  <version>0.0.0</version>
-  <description>The golfbot package</description>
+  <version>1.0.0</version>
+  <description>Golfbot: use a UR5 with mobile platform to play golf</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -49,6 +49,11 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>ur_gazebo</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>xacro</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

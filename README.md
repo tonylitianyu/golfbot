@@ -14,14 +14,9 @@ The goal of this project is to use a mobile manipulator to hold a golf club and 
 6. The ball will fall back to the ground and hit the goal
 
 
-## Status Summary
-Current: The Golfbot can perform all the steps described in the proposal. However, it is limited to when the user defined distance is 4.5m-6.5m away. The swing is still super simple. I still need to configure the physics (club-ball collision and ground-ball collision)
-
-Expected: The Golfbot can perform all the steps decribed in the proposal. It should be able to hit accurately between 3m-10m. The swing should be more <b>complex(vague)</b>
-
 
 ## ROS Graph
-![ros_graph](rosgraph.png)
+![ros_graph](rosgraph_complete.png)
 
 
 ## Packages
@@ -55,9 +50,5 @@ unpause Gazebo
 
 rosservice call /eyeball  #Measure distance using depth
 
-rosservice call /ready    #Ready pose
-
-rosservice call /upswing  #Swing the club up
-
-rosservice call /hit      #Hit
+rosservice call /hit      #Perform the swing
 ```
