@@ -90,6 +90,10 @@ class Swing:
                 EmptyResponss (EmptyResponse)
         '''
 
+        if abs(self.curr_dis) < 1e-2:
+            rospy.logerr("You have not measured the goal distance yet")
+            return EmptyResponse()
+
         self.time_between_waypoints = 0.5
         self.moving_base_direction = [STOP, STOP, STOP, BACKWARD, FORWARD]
 
@@ -105,9 +109,9 @@ class Swing:
         r_base = 0.402 + 0.3745
         club_mass = 0.5
         ball_mass = 0.04593
-        energy_gain = 1/0.1763712
+        energy_gain = 1.0/0.1763712
         mass_ratio = energy_gain*(ball_mass/club_mass)
-        base_swing = (mass_ratio*math.sqrt((self.curr_dis*9.8)/math.sin(2*0.566)) - 1)/(0.785*r_end + r_base)
+        base_swing = (mass_ratio*math.sqrt((self.curr_dis*9.8)/math.sin(2.0*0.566)) - 1)/(0.785*r_end + r_base)
         wrist_swing = 0.785*base_swing
 
 
