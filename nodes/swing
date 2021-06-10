@@ -71,6 +71,9 @@ class Swing:
 
         self.ready = False
 
+
+        self.method = 'numerical' #or 'analytical'
+
     def distance_callback(self, data):
         '''callback function for getting distance from vision node
             Args:
@@ -103,16 +106,16 @@ class Swing:
         wrist_swing = 0.785*base_swing
 
 
-
-        #analytical solution (currently using)
-        r_end = 0.605
-        r_base = 0.402 + 0.3745
-        club_mass = 0.5
-        ball_mass = 0.04593
-        energy_gain = 1.0/0.1763712
-        mass_ratio = energy_gain*(ball_mass/club_mass)
-        base_swing = (mass_ratio*math.sqrt((self.curr_dis*9.8)/math.sin(2.0*0.566)) - 1)/(0.785*r_end + r_base)
-        wrist_swing = 0.785*base_swing
+        if self.method == 'analytical':
+            #analytical solution (currently using)
+            r_end = 0.605
+            r_base = 0.402 + 0.3745
+            club_mass = 0.5
+            ball_mass = 0.04593
+            energy_gain = 1.0/0.1763712
+            mass_ratio = energy_gain*(ball_mass/club_mass)
+            base_swing = (mass_ratio*math.sqrt((self.curr_dis*9.8)/math.sin(2.0*0.566)) - 1)/(0.785*r_end + r_base)
+            wrist_swing = 0.785*base_swing
 
 
         self.goal_pos = [[0.0, -1.0, 0.5, -1.87, 0.0, 3.14], 
