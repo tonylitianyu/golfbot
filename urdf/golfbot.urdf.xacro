@@ -24,7 +24,7 @@
   <joint name="arm_chasis_joint" type="fixed">
     <parent link="ddrive_base_link" />
     <child link = "base_link" />
-    <origin xyz="0.0 0.2 0.4" rpy="0.0 0.0 ${pi/2}" />
+    <origin xyz="0.0 0.2 0.35" rpy="0.0 0.0 ${pi/2}" />
   </joint>
 
   <!-- weight block-->
@@ -54,9 +54,9 @@
   <!-- arm base support-->
     <link name="arm_support">
         <visual>
-            <origin rpy="0 0.0 0.0" xyz="0 0.2 0.2" />
+            <origin rpy="0 0.0 0.0" xyz="0 0.2 0.175" />
             <geometry>
-                <cylinder radius="0.05" length="0.4"/>
+                <cylinder radius="0.05" length="0.35"/>
             </geometry>
             <material name="green"/>
         </visual>
@@ -78,9 +78,9 @@
   <!-- camera support-->
     <link name="camera_support">
         <visual>
-            <origin rpy="0 0.0 0.0" xyz="0 0 0.35" />
+            <origin rpy="0 0.0 0.0" xyz="0 0 0.4" />
             <geometry>
-                <cylinder radius="0.01" length="0.7"/>
+                <cylinder radius="0.01" length="0.8"/>
             </geometry>
             <material name="green"/>
         </visual>
@@ -102,7 +102,7 @@
   <!-- camera -->
   <xacro:include filename="$(find golfbot)/urdf/_d435.urdf.xacro" />
   <xacro:sensor_d435 name="camera" topics_ns="camera" parent="camera_support" publish_pointcloud="true">
-    <origin xyz="0 0 0.7" rpy="0 0 ${pi}" />
+    <origin xyz="0 0 0.8" rpy="0 0 ${pi}" />
   </xacro:sensor_d435>
 
 </robot>

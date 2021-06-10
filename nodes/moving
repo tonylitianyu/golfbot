@@ -5,7 +5,7 @@ import rospy
 import numpy as np
 import math
 from geometry_msgs.msg import Twist
-from std_msgs.msg import Int16
+from std_msgs.msg import Int16, Float32
 
 STOP = 0
 FORWARD = 1
@@ -17,7 +17,10 @@ class Moving:
         self.vel_pub = rospy.Publisher("diff/cmd_vel", Twist, queue_size = 10)
         self.command_sub = rospy.Subscriber("move_command",Int16, self.command_callback)
 
+
         self.command_flag = STOP
+
+
     
     def command_callback(self, data):
         self.command_flag = data.data
