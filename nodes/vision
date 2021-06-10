@@ -116,6 +116,9 @@ class Vision:
             else : 
                 detector = cv2.SimpleBlobDetector_create(params)
 
+
+            #denoise
+
             img2 = cv2.merge((self.color_img,self.color_img,self.color_img))
             img2 = cv2.fastNlMeansDenoisingColored(img2,None,10,10,7,21)
 
@@ -123,7 +126,7 @@ class Vision:
             img2 = cv2.threshold(img2, thresh, 255, cv2.THRESH_BINARY)[1]
 
 
-
+            #find keypoints
             detector.empty()
             keypoints = detector.detect(img2)
 
