@@ -1,9 +1,8 @@
 # Golfbot
-This is a project for ME495 Cloud Simulation at Northwestern University
-Author: Tianyu Li
+Author: Tianyu Li  
+Video: [Youtube Link](https://www.youtube.com/watch?v=YvJyH1p41-M)
 
-
-## Proposal
+## Project Description
 
 The goal of this project is to use a mobile manipulator to hold a golf club and hit a golf ball to a specific target. The ball must leave the ground when travelling towards the goal, but must be on the ground when it is at the goal. As long as the ball is touching the ground when it is at the goal location, the attempt can be declared as a success trial. There could be obstacles (water, sand bunker, anything flat) between the robot and the goal. The goal location will be defined by the user, which can only be changed along the axis on which the ball will travel for now. The ball starting position will be fixed on a tee. A complete routine goes as follows:
 1. The user will define a distance from the robot (potentially the obstacle)
